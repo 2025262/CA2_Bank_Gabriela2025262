@@ -4,6 +4,7 @@
  */
 package CA_2;
 
+import java.util.Scanner;
 /**
  *
  * @author gabi.richardz
@@ -23,9 +24,59 @@ public class Main {
         // creating employees
         Employee e1 = new Employee("Maria Oliveira", 201, finance, m1);
         Employee e2 = new Employee("Carlos Silva", 202, it, m2);
-
         
-        System.out.println(e1);
-        System.out.println(e2);
+        
+        //menu
+        Scanner input = new Scanner(System.in);
+        MenuOption choice = null;
+        
+        System.out.println("Welcome to the Bank Management System");
+
+        do {
+            System.out.println("\nPlease choose an option:");
+            for (MenuOption option : MenuOption.values()) {
+                System.out.println(option.getCode() + " - " + option.getDescription());
+            }
+
+            System.out.print("Enter your choice: ");
+            int code = 0;
+
+            try {
+                code = Integer.parseInt(input.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                continue;
+            }
+
+            choice = MenuOption.fromCode(code);
+
+            if (choice == null) {
+                System.out.println("Invalid choice! Try again.");
+                continue;
+            }
+
+            switch (choice) {
+                case SORT:
+                    System.out.println("Sorting the applicants list");
+                    break;
+                case SEARCH:
+                    System.out.println("Searching for employee");
+                    break;
+                case ADD:
+                    System.out.println("Adding a new record");
+                    break;
+                case TREE:
+                    System.out.println("Creating the employee hierarchy");
+                    break;
+                case EXIT:
+                    System.out.println("Exiting the program");
+                    break;
+            }
+
+        } while (choice != MenuOption.EXIT);
+
+        input.close();
+       
     }
 }
+   
