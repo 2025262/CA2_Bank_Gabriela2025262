@@ -57,7 +57,29 @@ public class Main {
 
             switch (choice) {
                 case SORT:
-                    System.out.println("Sorting the applicants list");
+                    System.out.println("Reading applicants from file and sorting");
+                    
+                try {
+                    java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                    java.util.List<String> names = java.nio.file.Files.readAllLines(path);
+                    
+                    names.removeIf(line -> line.trim().isEmpty());
+
+                    if (names.isEmpty()) {
+                        System.out.println("No applicants found in file.");
+                        break;
+                    }
+
+                    java.util.List<String> sortedNames = Sorting.mergeSort(names);
+
+                    System.out.println("Sorted Applicants (first 20)");
+                    for (int i = 0; i < Math.min(20, sortedNames.size()); i++) {
+                        System.out.println((i + 1) + ". " + sortedNames.get(i));
+                    }
+
+                } catch (Exception ex) {
+                    System.out.println("Error reading file: " + ex.getMessage());
+                }
                     break;
                 case SEARCH:
                     System.out.println("Searching for employee");
