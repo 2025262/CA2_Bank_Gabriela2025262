@@ -82,8 +82,26 @@ public class Main {
                 }
                     break;
                 case SEARCH:
-                    System.out.println("Searching for employee");
-                    break;
+                    System.out.println("Enter the employee name to search:");
+                    String target = input.nextLine();
+
+                try {
+                    java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                    java.util.List<String> names = java.nio.file.Files.readAllLines(path);
+
+                    int index = Search.binarySearch(names, target);
+
+                    if (index != -1) {
+                        System.out.println(target + " found at position " + (index + 1));
+                    } else {
+                        System.out.println(target + " not found in the applicants list.");
+                    }
+
+                } catch (Exception ex) {
+                    System.out.println("Error reading file: " + ex.getMessage());
+                }
+                break;
+                
                 case ADD:
                     System.out.println("Adding a new record");
                     break;
