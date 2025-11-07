@@ -103,7 +103,24 @@ public class Main {
                 break;
                 
                 case ADD:
-                    System.out.println("Adding a new record");
+                    System.out.println("Enter the name of the new applicant:");
+                    String newName = input.nextLine();
+                    
+                try {
+                    java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+
+                    // Escreve o novo nome no final do arquivo
+                    java.nio.file.Files.write(
+                        path,
+                        java.util.Collections.singletonList(newName),
+                        java.nio.file.StandardOpenOption.APPEND
+                    );
+
+                    System.out.println(newName + " added successfully!");
+
+                } catch (Exception ex) {
+                    System.out.println("Error adding new applicant: " + ex.getMessage());
+                }
                     break;
                 case TREE:
                     System.out.println("Creating the employee hierarchy");
