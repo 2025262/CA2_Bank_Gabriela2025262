@@ -123,7 +123,19 @@ public class Main {
                 }
                     break;
                 case TREE:
-                    System.out.println("Creating the employee hierarchy");
+                    System.out.println("Creating employee hierarchy");
+                    
+                    BinaryTree tree = new BinaryTree();
+
+                    tree.insert("Alice Brown");   
+                    tree.insert("Maria Oliveira");  
+                    tree.insert("Carlos Silva");   
+                    tree.insert("John Smith");     
+                    tree.insert("Fernanda Oliveira");
+                    tree.insert("Beatriz Monteiro");
+
+                    tree.displayHierarchy();                 
+                    
                     break;
                 case EXIT:
                     System.out.println("Exiting the program");
