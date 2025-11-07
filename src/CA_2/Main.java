@@ -33,7 +33,7 @@ public class Main {
         System.out.println("Welcome to the Bank Management System");
 
         do {
-            System.out.println("\nPlease choose an option:");
+            System.out.println("Please choose an option:");
             for (MenuOption option : MenuOption.values()) {
                 System.out.println(option.getCode() + " - " + option.getDescription());
             }
@@ -103,42 +103,58 @@ public class Main {
                 break;
                 
                 case ADD:
-                    System.out.println("Enter the name of the new applicant:");
+                    System.out.println("Add new applicant");
+                    
+                    System.out.print("Enter applicant name: ");
                     String newName = input.nextLine();
                     
-                try {
-                    java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                    //managers
+                    String[] validManagers = {"Branch Manager", "Assistant Manager", "Team Lead"};
+                    System.out.println("Choose Manager Type:");
+                    for (int i = 0; i < validManagers.length; i++) {
+                        System.out.println((i + 1) + " - " + validManagers[i]);
+                    }
 
-                    // Escreve o novo nome no final do arquivo
-                    java.nio.file.Files.write(
-                        path,
-                        java.util.Collections.singletonList(newName),
-                        java.nio.file.StandardOpenOption.APPEND
-                    );
+                    System.out.print("Enter number for Manager Type: ");
+                    int managerChoice = Integer.parseInt(input.nextLine());
+                    if (managerChoice < 1 || managerChoice > validManagers.length) {
+                        System.out.println("Invalid Manager Type choice!");
+                        break;
+                    }
+                    String chosenManager = validManagers[managerChoice - 1];
 
-                    System.out.println(newName + " added successfully!");
+                    //departments
+                    String[] validDepartments = {"Finance", "IT", "Customer Service"};
+                    System.out.println("Choose Department:");
+                    for (int i = 0; i < validDepartments.length; i++) {
+                        System.out.println((i + 1) + " - " + validDepartments[i]);
+                    }
 
-                } catch (Exception ex) {
-                    System.out.println("Error adding new applicant: " + ex.getMessage());
-                }
-                    break;
-                case TREE:
-                    System.out.println("Creating employee hierarchy");
-                    
-                    BinaryTree tree = new BinaryTree();
+                    System.out.print("Enter number for Department: ");
+                    int deptChoice = Integer.parseInt(input.nextLine());
+                    if (deptChoice < 1 || deptChoice > validDepartments.length) {
+                        System.out.println("Invalid Department choice!");
+                        break;
+                    }
+                    String chosenDepartment = validDepartments[deptChoice - 1];
 
-                    tree.insert("Alice Brown");   
-                    tree.insert("Maria Oliveira");  
-                    tree.insert("Carlos Silva");   
-                    tree.insert("John Smith");     
-                    tree.insert("Fernanda Oliveira");
-                    tree.insert("Beatriz Monteiro");
+                    try {
+                        java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
 
-                    tree.displayHierarchy();                 
-                    
-                    break;
-                case EXIT:
-                    System.out.println("Exiting the program");
+                        //record manager and department
+                        String record = newName + " | " + chosenManager + " | " + chosenDepartment;
+                        java.nio.file.Files.write(
+                            path,
+                            java.util.Collections.singletonList(record),
+                            java.nio.file.StandardOpenOption.APPEND
+                        );
+
+                        System.out.println("New applicant added successfully:");
+                        System.out.println(record);
+
+                    } catch (Exception ex) {
+                        System.out.println("Error adding applicant: " + ex.getMessage());
+                    }
                     break;
             }
 
