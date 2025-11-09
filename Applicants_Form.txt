@@ -1,25 +1,20 @@
-Maria Silva
-João Pereira
-Ana Costa
-Lucas Mendes
-Fernanda Oliveira
-Paulo Santos
-Juliana Carvalho
-Rodrigo Lima
-Camila Alves
-Eduardo Souza
-Patrícia Ferreira
-Mariana Gomes
-Vinícius Rocha
-Carolina Azevedo
-Thiago Pinto
-Beatriz Monteiro
-Bruno Ribeiro
-Isabela Martins
-André Cardoso
-Laura Pires
-Renato Faria
-Felipe Almeida
-
-Gabriela Richardz
-Gabriela Richardz | Branch Manager | IT
+Alice Brown | Branch Manager | Finance
+John Smith | Assistant Manager | Finance
+Maria Oliveira | Team Lead | IT
+Carlos Silva | Team Lead | IT
+Beatriz Monteiro | Team Lead | Finance
+Fernando Souza | Assistant Manager | IT
+Juliana Carvalho | Assistant Manager | Customer Service
+Rodrigo Lima | Team Lead | Customer Service
+Camila Alves | Assistant Manager | Finance
+Eduardo Santos | Team Lead | Finance
+Patrícia Ferreira | Branch Manager | Customer Service
+Renato Faria | Assistant Manager | Finance
+Laura Pires | Team Lead | IT
+André Cardoso | Assistant Manager | Finance
+Felipe Almeida | Team Lead | Customer Service
+Isabela Martins | Branch Manager | IT
+Thiago Pinto | Team Lead | Finance
+Bruno Ribeiro | Assistant Manager | Customer Service
+Carolina Azevedo | Team Lead | IT
+Vinícius Rocha | Assistant Manager | Finance

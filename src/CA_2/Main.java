@@ -156,6 +156,40 @@ public class Main {
                         System.out.println("Error adding applicant: " + ex.getMessage());
                     }
                     break;
+                
+                case TREE:
+                    System.out.println("Creating employee hierarchy (level-order)");
+
+                    BinaryTree tree = new BinaryTree();
+
+                    try {
+                        java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                        java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
+
+                        if (lines.isEmpty()) {
+                            System.out.println("No data found in Applicants_Form.txt");
+                            break;
+                        }
+
+                        //reading file
+                        for (String line : lines) {
+                            String[] parts = line.split("\\|");
+                            if (parts.length == 3) {
+                                String name = parts[0].trim();
+                                String managerType = parts[1].trim();
+                                String department = parts[2].trim();
+                                tree.insertLevelOrder(name, managerType, department);
+                            }
+                        }
+
+                        System.out.println("Hierarchy created successfully!");
+                        tree.displayLevelOrder();
+
+                    } catch (Exception ex) {
+                        System.out.println("Error reading Applicants_Form.txt: " + ex.getMessage());
+                    }
+                    break;
+    
             }
 
         } while (choice != MenuOption.EXIT);
