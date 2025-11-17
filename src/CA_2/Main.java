@@ -59,48 +59,101 @@ public class Main {
                 case SORT:
                     System.out.println("Reading applicants from file and sorting");
                     
-                try {
+                    try {
                     java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
-                    java.util.List<String> names = java.nio.file.Files.readAllLines(path);
+                    java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
                     
-                    names.removeIf(line -> line.trim().isEmpty());
+                    lines.removeIf(line -> line.trim().isEmpty());
 
-                    if (names.isEmpty()) {
+
+                    if (lines.isEmpty()) {
                         System.out.println("No applicants found in file.");
                         break;
                     }
 
-                    java.util.List<String> sortedNames = Sorting.mergeSort(names);
+                    java.util.List<String> namesOnly = new java.util.ArrayList<>();
+                    for (String line : lines) {
+                        String[] parts = line.split("\\|");
+                        if (parts.length >= 1) {
+                            String name = parts[0].trim();
+                            if (!name.isEmpty()) {
+                                namesOnly.add(name);
+                            }
+                        }
+                    }
+
+                    if (namesOnly.isEmpty()) {
+                    System.out.println("No valid applicant names found in file.");
+                    break;
+                    }
+
+                    java.util.List<String> sortedNames = Sorting.mergeSort(namesOnly);
 
                     System.out.println("Sorted Applicants (first 20)");
                     for (int i = 0; i < Math.min(20, sortedNames.size()); i++) {
                         System.out.println((i + 1) + ". " + sortedNames.get(i));
                     }
 
-                } catch (Exception ex) {
-                    System.out.println("Error reading file: " + ex.getMessage());
-                }
+                    } catch (Exception ex) {
+                        System.out.println("Error reading file: " + ex.getMessage());
+                    }
                     break;
+                    
                 case SEARCH:
                     System.out.println("Enter the employee name to search:");
                     String target = input.nextLine();
 
-                try {
-                    java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
-                    java.util.List<String> names = java.nio.file.Files.readAllLines(path);
+                    try {
+                        java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                        java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
 
-                    int index = Search.binarySearch(names, target);
+                        java.util.List<String> namesOnly = new java.util.ArrayList<>();
+                        java.util.List<String[]> fullRecords = new java.util.ArrayList<>();
 
-                    if (index != -1) {
-                        System.out.println(target + " found at position " + (index + 1));
-                    } else {
-                        System.out.println(target + " not found in the applicants list.");
+                        //extract full data
+                        for (String line : lines) {
+                            String[] parts = line.split("\\|");
+                            if (parts.length == 3) {
+                                String name = parts[0].trim();
+                                String managerType = parts[1].trim();
+                                String department = parts[2].trim();
+
+                                namesOnly.add(name);
+                                fullRecords.add(new String[]{name, managerType, department});
+                            }
+                        }
+                        
+                        //sort the names
+                        java.util.List<String> sortedNames = Sorting.mergeSort(namesOnly);
+
+                        //reorder full records to match sorted order
+                        java.util.List<String[]> sortedRecords = new java.util.ArrayList<>();
+                        for (String sortedName : sortedNames) {
+                            for (String[] r : fullRecords) {
+                                if (r[0].equalsIgnoreCase(sortedName)) {
+                                    sortedRecords.add(r);
+                                    break;
+                                }
+                            }
+                        }
+
+                        //search name
+                        int index = Search.binarySearch(sortedNames, target);
+
+                        if (index != -1) {                     
+                            System.out.println("\nFOUND:");
+                            System.out.println("Name: " + sortedRecords.get(index)[0]);
+                            System.out.println("Manager Type: " + sortedRecords.get(index)[1]);
+                            System.out.println("Department: " + sortedRecords.get(index)[2]);
+                            System.out.println();
+                        } else {
+                            System.out.println(target + " not found.");
+                        }
+                        
+                    } catch (Exception ex) {
+                        System.out.println("Error reading file: " + ex.getMessage());
                     }
-
-                } catch (Exception ex) {
-                    System.out.println("Error reading file: " + ex.getMessage());
-                }
-                break;
+                    break;
                 
                 case ADD:
                     System.out.println("Add new applicant");
