@@ -13,19 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // creating departments
-        Department finance = new Department("Finance", "D001");
-        Department it = new Department("IT", "D002");
-
-        // creating managers
-        Manager m1 = new Manager("Alice Brown", "Branch Manager", 101);
-        Manager m2 = new Manager("John Smith", "Assistant Manager", 102);
-
-        // creating employees
-        Employee e1 = new Employee("Maria Oliveira", 201, finance, m1);
-        Employee e2 = new Employee("Carlos Silva", 202, it, m2);
-        
-        
         //menu
         Scanner input = new Scanner(System.in);
         MenuOption choice = null;
@@ -57,17 +44,17 @@ public class Main {
 
             switch (choice) {
                 case SORT:
-                    System.out.println("Reading applicants from file and sorting");
+                    System.out.println("Reading employees from file and sorting");
                     
                     try {
-                    java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                    java.nio.file.Path path = java.nio.file.Paths.get("Employees_Form.txt");
                     java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
                     
                     lines.removeIf(line -> line.trim().isEmpty());
 
 
                     if (lines.isEmpty()) {
-                        System.out.println("No applicants found in file.");
+                        System.out.println("No employees found in file.");
                         break;
                     }
 
@@ -83,13 +70,13 @@ public class Main {
                     }
 
                     if (namesOnly.isEmpty()) {
-                    System.out.println("No valid applicant names found in file.");
+                    System.out.println("No valid employee names found in file.");
                     break;
                     }
 
                     java.util.List<String> sortedNames = Sorting.mergeSort(namesOnly);
 
-                    System.out.println("Sorted Applicants (first 20)");
+                    System.out.println("Sorted Employees (first 20)");
                     for (int i = 0; i < Math.min(20, sortedNames.size()); i++) {
                         System.out.println((i + 1) + ". " + sortedNames.get(i));
                     }
@@ -104,7 +91,7 @@ public class Main {
                     String target = input.nextLine();
 
                     try {
-                        java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                        java.nio.file.Path path = java.nio.file.Paths.get("Employees_Form.txt");
                         java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
 
                         java.util.List<String> namesOnly = new java.util.ArrayList<>();
@@ -156,9 +143,9 @@ public class Main {
                     break;
                 
                 case ADD:
-                    System.out.println("Add new applicant");
+                    System.out.println("Add new employee");
                     
-                    System.out.print("Enter applicant name: ");
+                    System.out.print("Enter employee name: ");
                     String newName = input.nextLine();
                     
                     //managers
@@ -167,9 +154,32 @@ public class Main {
                     for (int i = 0; i < validManagers.length; i++) {
                         System.out.println((i + 1) + " - " + validManagers[i]);
                     }
+                    
+                    int managerChoice = -1;
 
-                    System.out.print("Enter number for Manager Type: ");
-                    int managerChoice = Integer.parseInt(input.nextLine());
+                    while (true) {
+                        System.out.print("Enter number for Manager Type: ");
+                        String managerInput = input.nextLine();
+
+                        if (managerInput.isBlank()) {
+                            System.out.println("Input cannot be empty. Please enter a number.");
+                            continue;
+                        }
+
+                        try {
+                            managerChoice = Integer.parseInt(managerInput);
+
+                            if (managerChoice < 1 || managerChoice > validManagers.length) {
+                                System.out.println("Invalid choice! Please select a valid option.");
+                                continue;
+                            }
+                            break; // válido → sair do loop
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input! Please enter a NUMBER.");
+                        }
+                    }
+                    
                     if (managerChoice < 1 || managerChoice > validManagers.length) {
                         System.out.println("Invalid Manager Type choice!");
                         break;
@@ -182,9 +192,32 @@ public class Main {
                     for (int i = 0; i < validDepartments.length; i++) {
                         System.out.println((i + 1) + " - " + validDepartments[i]);
                     }
+                    
+                    int deptChoice = -1;
 
-                    System.out.print("Enter number for Department: ");
-                    int deptChoice = Integer.parseInt(input.nextLine());
+                    while (true) {
+                        System.out.print("Enter number for Department: ");
+                        String deptInput = input.nextLine();
+
+                        if (deptInput.isBlank()) {
+                            System.out.println("Input cannot be empty. Please enter a number.");
+                            continue;
+                        }
+
+                        try {
+                            deptChoice = Integer.parseInt(deptInput);
+
+                            if (deptChoice < 1 || deptChoice > validDepartments.length) {
+                                System.out.println("Invalid choice! Please select a valid option.");
+                                continue;
+                            }
+                            break;
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input! Please enter a NUMBER.");
+                        }
+                    }
+                    
                     if (deptChoice < 1 || deptChoice > validDepartments.length) {
                         System.out.println("Invalid Department choice!");
                         break;
@@ -192,21 +225,22 @@ public class Main {
                     String chosenDepartment = validDepartments[deptChoice - 1];
 
                     try {
-                        java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                        java.nio.file.Path path = java.nio.file.Paths.get("Employees_Form.txt");
 
                         //record manager and department
-                        String record = newName + " | " + chosenManager + " | " + chosenDepartment;
+                        String record = newName + " | " + chosenManager + " | " + chosenDepartment + System.lineSeparator();
                         java.nio.file.Files.write(
                             path,
                             java.util.Collections.singletonList(record),
+                            java.nio.file.StandardOpenOption.CREATE,
                             java.nio.file.StandardOpenOption.APPEND
                         );
 
-                        System.out.println("New applicant added successfully:");
+                        System.out.println("New employee added successfully:");
                         System.out.println(record);
 
                     } catch (Exception ex) {
-                        System.out.println("Error adding applicant: " + ex.getMessage());
+                        System.out.println("Error adding employee: " + ex.getMessage());
                     }
                     break;
                 
@@ -216,11 +250,11 @@ public class Main {
                     BinaryTree tree = new BinaryTree();
 
                     try {
-                        java.nio.file.Path path = java.nio.file.Paths.get("Applicants_Form.txt");
+                        java.nio.file.Path path = java.nio.file.Paths.get("Employees_Form.txt");
                         java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
 
                         if (lines.isEmpty()) {
-                            System.out.println("No data found in Applicants_Form.txt");
+                            System.out.println("No data found in Employees_Form.txt");
                             break;
                         }
 
@@ -239,7 +273,7 @@ public class Main {
                         tree.displayLevelOrder();
 
                     } catch (Exception ex) {
-                        System.out.println("Error reading Applicants_Form.txt: " + ex.getMessage());
+                        System.out.println("Error reading Employees_Form.txt: " + ex.getMessage());
                     }
                     break;
     

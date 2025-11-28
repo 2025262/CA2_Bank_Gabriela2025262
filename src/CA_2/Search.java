@@ -14,9 +14,6 @@ import java.util.Collections;
 public class Search {
     
     public static int binarySearch(List<String> list, String target) {
-        
-        //garantee that the list is organized
-        Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
 
         int left = 0;
         int right = list.size() - 1;

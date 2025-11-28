@@ -12,7 +12,7 @@ package CA_2;
 //enum with menu options
 public enum MenuOption {
     
-    SORT(1, "Sort applicants list"),
+    SORT(1, "Sort employees list"),
     SEARCH(2, "Search for employee"),
     ADD(3, "Add new record"),
     TREE(4, "Create employee hierarchy"),
